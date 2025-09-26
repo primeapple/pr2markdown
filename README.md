@@ -2,14 +2,6 @@
 
 A simple browser extension that adds a copy button next to GitHub and GitLab pull requests to copy the PR as markdown in the format `[PR Title](PR URL)`.
 
-## Features
-
-- 📋 One-click copy button next to PR titles
-- 🔗 Generates markdown links in format: `[Name of the PR](url.to.the.pr/)`
-- 🌐 Works on GitHub.com, GitLab.com, and self-hosted GitLab instances
-- ✨ Includes PR description if available
-- 🎯 Minimal and lightweight
-
 ## Installation
 
 ### Development Installation
@@ -38,8 +30,6 @@ The extension copies PRs in this markdown format:
 
 ```markdown
 [PR Title](https://github.com/user/repo/pull/123)
-
-PR description goes here if available...
 ```
 
 ## Development
