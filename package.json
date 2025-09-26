@@ -1,0 +1,13 @@
+{
+  "name": "pr2markdown",
+  "version": "1.0.0",
+  "description": "Browser extension to copy GitHub and GitLab pull requests as markdown",
+  "scripts": {
+    "build": "echo 'No build step needed for simple extension'",
+    "dev": "echo 'Load unpacked extension in browser for development'",
+    "lint": "echo 'No linting configured yet'"
+  },
+  "keywords": ["browser-extension", "github", "gitlab", "markdown", "pull-request"],
+  "author": "",
+  "license": "MIT"
+}
