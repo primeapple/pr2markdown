@@ -1,13 +1,17 @@
 (function () {
 	"use strict";
 
+	/**
+	 * @typedef {"github" | "gitlab"} Platform
+	 */
+
 	const TITLE_SELECTOR = {
 		github: "bdi",
 		gitlab: "h1",
 	};
 
 	/**
-	 * @returns {"github" | "gitlab" | null}
+	 * @returns {Platform | null}
 	 */
 	function detectPlatform() {
 		const hostname = window.location.hostname;
@@ -30,7 +34,22 @@
 	}
 
 	/**
-	 * @param {"github" | "gitlab"} platform
+	 * @param {Platform} platform
+	 * @returns {boolean}
+	 */
+	function isOnPRPage(platform) {
+		const path = window.location.pathname;
+
+		switch (platform) {
+			case "github":
+				return /\/pull\/\d+$/.test(path);
+			case "gitlab":
+				return /\/merge_requests\/\d+$/.test(path) || /\/-\/merge_requests\/\d+$/.test(path);
+		}
+	}
+
+	/**
+	 * @param {Platform} platform
 	 * @returns {Element}
 	 * @throws {Error} If the title element cannot be found
 	 */
@@ -44,7 +63,7 @@
 	}
 
 	/**
-	 * @param {"github" | "gitlab"} platform
+	 * @param {Platform} platform
 	 * @returns {Element}
 	 * @throws {Error} If the action section cannot be found
 	 */
@@ -68,7 +87,7 @@
 	}
 
 	/**
-	 * @param {"github" | "gitlab"} platform
+	 * @param {Platform} platform
 	 * @returns {string}
 	 */
 	function getPRTitle(platform) {
@@ -100,7 +119,7 @@
 	}
 
 	/**
-	 * @param {"github" | "gitlab"} platform
+	 * @param {Platform} platform
 	 */
 	function addCopyButton(platform) {
 		if (document.querySelector(".pr2md-copy-btn")) {
@@ -144,7 +163,12 @@
 			return;
 		}
 
-		console.log(`PR2Markdown: Detected platform: ${platform}`);
+		if (!isOnPRPage(platform)) {
+			console.log("PR2Markdown: Not on a PR/MR page");
+			return;
+		}
+
+		console.log(`PR2Markdown: On MR page for platform: ${platform}`);
 
 		if (document.readyState === "loading") {
 			document.addEventListener("DOMContentLoaded", () =>
