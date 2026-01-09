@@ -1,10 +1,12 @@
-# PR to Markdown Browser Extension
+# PR to Markdown
 
-A simple browser extension that adds a copy button next to GitHub and GitLab pull requests to copy the PR as markdown in the format `[PR Title](PR URL)`.
+A simple browser extension and userscript that adds a copy button next to GitHub and GitLab pull requests to copy the PR as markdown in the format `[PR Title](PR URL)`.
 
 ## Installation
 
-### Development Installation
+### Browser Extension
+
+#### Development Installation
 
 1. Clone this repository
 2. Open Chrome/Edge and go to `chrome://extensions/`
@@ -12,7 +14,15 @@ A simple browser extension that adds a copy button next to GitHub and GitLab pul
 4. Click "Load unpacked" and select this directory
 5. The extension is now installed and ready to use
 
-### Usage
+### Userscript (Tampermonkey)
+
+1. Install [Tampermonkey](https://www.tampermonkey.net/) extension in your browser
+2. Copy the contents of `pr2markdown.user.js`
+3. Create a new userscript in Tampermonkey and paste the code
+4. Save the userscript
+5. The script is now active on GitHub and GitLab PR pages
+
+## Usage
 
 1. Navigate to any GitHub or GitLab pull request
 2. Look for the 📋 button next to the PR title
@@ -34,8 +44,11 @@ The extension copies PRs in this markdown format:
 
 ## Development
 
-No build process required - the extension uses plain JavaScript.
+No build process required - both the extension and userscript use plain JavaScript.
 
-- `content.js` - Main content script that runs on PR pages
+### Files
+
+- `content.js` - Main content script logic for the extension
 - `manifest.json` - Extension configuration
 - `styles.css` - Button styling
+- `pr2markdown.user.js` - Tampermonkey userscript version
