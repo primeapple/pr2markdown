@@ -1,18 +1,14 @@
-# PR to Markdown
+# My Userscripts Collection
 
-A simple browser extension and userscript that adds a copy button next to GitHub and GitLab pull requests to copy the PR as markdown in the format `[PR Title](PR URL)`.
+A collection of browser userscripts I've developed to enhance various websites.
+
+## Userscripts
+
+### PR to Markdown
+
+A simple userscript that adds a copy button next to GitHub and GitLab pull requests to copy the PR as markdown in the format `[PR Title](PR URL)`.
 
 ## Installation
-
-### Browser Extension
-
-#### Development Installation
-
-1. Clone this repository
-2. Open Chrome/Edge and go to `chrome://extensions/`
-3. Enable "Developer mode"
-4. Click "Load unpacked" and select this directory
-5. The extension is now installed and ready to use
 
 ### Userscript (Tampermonkey)
 
@@ -44,11 +40,8 @@ The extension copies PRs in this markdown format:
 
 ## Development
 
-No build process required - both the extension and userscript use plain JavaScript.
+No build process required - userscripts use plain JavaScript.
 
 ### Files
 
-- `content.js` - Main content script logic for the extension
-- `manifest.json` - Extension configuration
-- `styles.css` - Button styling
-- `pr2markdown.user.js` - Tampermonkey userscript version
+- `pr2markdown.user.js` - Tampermonkey userscript for copying PRs as markdown
