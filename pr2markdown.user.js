@@ -5,7 +5,7 @@
 // @description  Add a copy button to GitHub and GitLab pull requests to copy PR content as markdown
 // @author       You
 // @match        https://github.com/*
-// @match        https://*/-/merge_requests/*
+// @include      https://gitlab.*
 // @grant        GM_setClipboard
 // @run-at       document-end
 // ==/UserScript==
