@@ -197,6 +197,24 @@ html.gl-dark .pr2md-copy-btn:active {
 	}
 
 	/**
+	 * @param {Platform} platform
+	 * @returns {string}
+	 */
+	function getPRUrl(platform) {
+		const pathname = window.location.pathname;
+		let basePath = "";
+
+		if (platform === 'github') {
+            const parts = pathname.split("/");
+			basePath = `/${parts[1]}/${parts[2]}/pull/${parts[4]}`;
+		} else if (platform === 'gitlab') {
+			basePath = pathname.match(/^(.*\/-\/merge_requests\/\d+)/)[1];
+		}
+
+		return window.location.origin + basePath;
+	}
+
+	/**
 	 * @param {string} title
 	 * @param {string} url
 	 * @returns {string}
@@ -250,7 +268,7 @@ html.gl-dark .pr2md-copy-btn:active {
 
 			button.addEventListener("click", async function () {
 				const title = getPRTitle(platform);
-				const url = window.location.href;
+				const url = getPRUrl(platform);
 
 				const markdown = generateMarkdown(title, url);
 				logger.debug("Generated markdown:", markdown);
