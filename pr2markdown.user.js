@@ -54,7 +54,7 @@
 .pr2md-copy-btn {
     background: #f6f8fa;
     border: 1px solid #d1d9e0;
-    border-radius: .25rem;
+    border-radius: .5rem;
     color: #24292f;
     cursor: pointer;
     font-size: 14px;
