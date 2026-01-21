@@ -46,70 +46,6 @@
 		}
 	};
 
-	// Inject CSS styles
-	function injectStyles() {
-		const css = `
-/* PR to Markdown Extension Styles */
-
-.pr2md-copy-btn {
-    background: #f6f8fa;
-    border: 1px solid #d1d9e0;
-    border-radius: .5rem;
-    color: #24292f;
-    cursor: pointer;
-    font-size: 14px;
-    padding: 0 12px;
-    margin-left: 8px;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    max-height: 32px;
-    align-items: center;
-}
-
-.pr2md-copy-btn:hover {
-    background: #f3f4f6;
-    border-color: #c7d2fe;
-}
-
-.pr2md-copy-btn:active {
-    background: #e5e7eb;
-    transform: translateY(1px);
-}
-
-/* GitLab Light Theme */
-html.gl-light .pr2md-copy-btn {
-    background-color: #fff;
-    border: 1px solid #bfbfc3;
-}
-
-html.gl-light .pr2md-copy-btn:hover {
-    background-color: #ececef;
-    border-color: #89888d;
-}
-
-html.gl-light .pr2md-copy-btn:active {
-    background-color: rgba(137, 136, 141, 0.32);
-}
-
-/* GitLab Dark Theme */
-html.gl-dark .pr2md-copy-btn {
-    background-color: rgba(137, 136, 141, 0.4);
-    border: 1px solid transparent;
-}
-
-html.gl-dark .pr2md-copy-btn:hover {
-    background-color: rgba(137, 136, 141, 0.64);
-}
-
-html.gl-dark .pr2md-copy-btn:active {
-    background-color: rgba(137, 136, 141, 0.32);
-}
-`;
-		const style = document.createElement('style');
-		style.textContent = css;
-		document.head.appendChild(style);
-	}
-
 	/**
 	 * @typedef {"github" | "gitlab"} Platform
 	 */
@@ -237,6 +173,18 @@ html.gl-dark .pr2md-copy-btn:active {
 		}
 	}
 
+    /**
+	 * @param {Platform} platform
+	 */
+    function getButtonClassNamesByPlatform(platform) {
+        switch (platform) {
+            case "github":
+                return "btn-sm btn";
+            case "gitlab":
+                return "gl-button btn btn-md btn-default gl-hidden @sm/panel:gl-inline-flex gl-self-start";
+        }
+    }
+
 	/**
 	 * @param {Platform} platform
 	 */
@@ -247,7 +195,7 @@ html.gl-dark .pr2md-copy-btn:active {
 		}
 		logger.debug(`On MR page for platform: ${platform}`);
 
-		if (document.querySelector(".pr2md-copy-btn")) {
+		if (document.getElementById("pr2md-copy-btn")) {
             logger.debug("Button already exists")
 			return;
 		}
@@ -262,7 +210,8 @@ html.gl-dark .pr2md-copy-btn:active {
 			logger.debug("Found action section:", actionSection);
 
 			const button = document.createElement("button");
-			button.className = "pr2md-copy-btn";
+            button.id = "pr2md-copy-btn";
+            button.className = getButtonClassNamesByPlatform(platform);
 			button.textContent = "📋";
 			button.title = "Copy PR as Markdown";
 
@@ -297,8 +246,6 @@ html.gl-dark .pr2md-copy-btn:active {
 	}
 
 	function init() {
-		injectStyles();
-
 		logger.info("Userscript loaded on", window.location.href);
 
 		const platform = detectPlatform();
