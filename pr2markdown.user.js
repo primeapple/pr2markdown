@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PR to Markdown
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Add a copy button to GitHub and GitLab pull requests to copy PR content as markdown
 // @author       You
 // @match        https://github.com/*
@@ -51,7 +51,7 @@
 	 */
 
 	const TITLE_SELECTOR = {
-		github: "bdi",
+		github: '[data-component="PH_Actions"]',
 		gitlab: "h1",
 	};
 
@@ -94,7 +94,7 @@
 		const selector = TITLE_SELECTOR[platform];
 		const element = document.querySelector(selector);
 		if (!element) {
-			throw new Error(`Title element not found for platform: ${platform}`);
+			throw new Error(`Title element with selector "${selector}" not found for platform: ${platform}`);
 		}
 		return element;
 	}
@@ -113,7 +113,7 @@
 				actionSection = titleElement.nextElementSibling;
 				break;
 			case "github":
-				actionSection = titleElement.parentElement?.nextElementSibling;
+				actionSection = titleElement;
 				break;
 		}
 
@@ -179,7 +179,7 @@
     function getButtonClassNamesByPlatform(platform) {
         switch (platform) {
             case "github":
-                return "btn-sm btn";
+                return "btn";
             case "gitlab":
                 return "gl-button btn btn-md btn-default gl-hidden @sm/panel:gl-inline-flex gl-self-start";
         }
