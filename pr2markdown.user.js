@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PR to Markdown
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Add a copy button to GitHub and GitLab pull requests to copy PR content as markdown
 // @author       You
 // @match        https://github.com/*
@@ -51,7 +51,7 @@
 	 */
 
 	const TITLE_SELECTOR = {
-		github: '[data-component="PH_Actions"]',
+		github: '[data-component="TitleArea"]',
 		gitlab: "h1",
 	};
 
@@ -113,7 +113,7 @@
 				actionSection = titleElement.nextElementSibling;
 				break;
 			case "github":
-				actionSection = titleElement;
+				actionSection = titleElement.nextElementSibling;
 				break;
 		}
 
@@ -129,7 +129,12 @@
 	 */
 	function getPRTitle(platform) {
 		const titleElement = getTitleElement(platform);
-		return titleElement ? titleElement.textContent.trim() : "Pull Request";
+        switch (platform) {
+			case "gitlab":
+				return titleElement.textContent.trim() || "Merge Request";
+			case "github":
+				return titleElement.firstChild?.firstChild?.textContent.trim() || "Pull Request";
+        }
 	}
 
 	/**
