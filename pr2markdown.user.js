@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PR to Markdown
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  Add a copy button to GitHub and GitLab pull requests to copy PR content as markdown
 // @author       You
 // @match        https://github.com/*
@@ -133,7 +133,7 @@
             case "gitlab":
                 return titleElement.textContent.trim() || "Merge Request";
             case "github":
-                return titleElement.firstChild?.firstChild?.textContent.trim() || "Pull Request";
+                return titleElement.firstChild?.firstChild?.firstChild?.textContent.trim() || "Pull Request";
         }
     }
 
