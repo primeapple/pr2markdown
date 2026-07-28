@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "module": "NodeNext",
+    "noEmit": true,
+    "strict": true,
+    "target": "ES2024",
+    "types": ["node", "tampermonkey"]
+  },
+  "include": ["pr2markdown.user.js", "tests/**/*.mjs"]
+}

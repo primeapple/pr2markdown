@@ -7,6 +7,16 @@
     "node": ">=24"
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "typecheck": "tsc",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "format:check": "biome format ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.6",
+    "@types/node": "^24.13.3",
+    "@types/tampermonkey": "^5.0.5",
+    "typescript": "^7.0.2"
   }
 }
