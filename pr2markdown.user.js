@@ -7,6 +7,10 @@
 // @match        https://github.com/*
 // @include      https://gitlab.*
 // @grant        GM_setClipboard
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_registerMenuCommand
+// @grant        GM_unregisterMenuCommand
 // @run-at       document-end
 // ==/UserScript==
 
@@ -22,6 +26,8 @@
     };
 
     const CURRENT_LOG_LEVEL = LOG_LEVELS.ERROR; // Default to only show errors
+
+    const INCLUDE_REPO_SHORTHAND_KEY = "includeRepoShorthand";
 
     const logger = {
         error: (message, ...args) => {
@@ -156,12 +162,34 @@
     }
 
     /**
-     * @param {string} title
+     * @param {Platform} platform
      * @param {string} url
      * @returns {string}
+     * @throws {Error} If the URL is not a valid PR/MR URL for the platform
      */
-    function generateMarkdown(title, url) {
-        return `[${title}](${url})`;
+    function getRepoShorthand(platform, url) {
+        const pathname = new URL(url).pathname;
+        const pattern = platform === "github"
+            ? /^\/([^/]+\/[^/]+)\/pull\/\d+$/
+            : /^\/(.+)\/-\/merge_requests\/\d+$/;
+        const match = pathname.match(pattern);
+
+        if (!match) {
+            throw new Error(`Invalid ${platform} PR/MR URL: ${url}`);
+        }
+
+        return decodeURIComponent(match[1]);
+    }
+
+    /**
+     * @param {string} title
+     * @param {string} url
+     * @param {string} [repoShorthand]
+     * @returns {string}
+     */
+    function generateMarkdown(title, url, repoShorthand) {
+        const label = repoShorthand ? `${repoShorthand} - ${title}` : title;
+        return `[${label}](${url})`;
     }
 
     /**
@@ -188,6 +216,33 @@
             case "gitlab":
                 return "gl-button btn btn-md btn-default gl-hidden @sm/panel:gl-inline-flex gl-self-start";
         }
+    }
+
+    /**
+     * @returns {boolean}
+     */
+    function shouldIncludeRepoShorthand() {
+        return GM_getValue(INCLUDE_REPO_SHORTHAND_KEY, false);
+    }
+
+    function registerOptionsMenu() {
+        let menuId;
+
+        const register = () => {
+            menuId = GM_registerMenuCommand(
+                `Include repo shorthand: ${shouldIncludeRepoShorthand() ? "On" : "Off"}`,
+                () => {
+                    GM_setValue(INCLUDE_REPO_SHORTHAND_KEY, !shouldIncludeRepoShorthand());
+                    GM_unregisterMenuCommand(menuId);
+                    register();
+                },
+                {
+                    autoClose: false,
+                }
+            );
+        };
+
+        register();
     }
 
     /**
@@ -223,8 +278,11 @@
             button.addEventListener("click", async function () {
                 const title = getPRTitle(platform);
                 const url = getPRUrl(platform);
+                const repoShorthand = shouldIncludeRepoShorthand()
+                    ? getRepoShorthand(platform, url)
+                    : undefined;
 
-                const markdown = generateMarkdown(title, url);
+                const markdown = generateMarkdown(title, url, repoShorthand);
                 logger.debug("Generated markdown:", markdown);
 
                 const success = await copyToClipboard(markdown);
@@ -252,6 +310,7 @@
 
     function init() {
         logger.info("Userscript loaded on", window.location.href);
+        registerOptionsMenu();
 
         const platform = detectPlatform();
         logger.debug("Detected platform:", platform);
@@ -283,5 +342,9 @@
         }
     }
 
-    init();
+    if (typeof module !== "undefined" && module.exports) {
+        module.exports = { generateMarkdown, getRepoShorthand };
+    } else {
+        init();
+    }
 })();
