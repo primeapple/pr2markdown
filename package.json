@@ -4,7 +4,7 @@
   "description": "Collection of my userscripts",
   "license": "MIT",
   "engines": {
-    "node": ">=24"
+    "node": ">=26"
   },
   "scripts": {
     "test": "node --test tests/*.test.mjs",
