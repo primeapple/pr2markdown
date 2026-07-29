@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PR to Markdown
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.1.0
 // @description  Add a copy button to GitHub and GitLab pull requests to copy PR content as markdown
 // @author       You
 // @match        https://github.com/*
