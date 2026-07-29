@@ -7,41 +7,32 @@ A collection of browser userscripts I've developed to enhance various websites.
 ### PR to Markdown
 
 A simple userscript that adds a copy button next to GitHub and GitLab pull requests to copy the PR as markdown in the format `[PR Title](PR URL)`.
+There is an option to add the repo shortand to the displayed text, making it `[user/repo - PR Title](PR URL)`.
 
-## Installation
+Supported platforms are:
+- **GitHub**: github.com and GitHub Enterprise
+- **GitLab**: gitlab.com and self-hosted GitLab instances
 
-### Userscript (Tampermonkey)
-
-1. Install [Tampermonkey](https://www.tampermonkey.net/) extension in your browser
-2. Copy the contents of `pr2markdown.user.js`
-3. Create a new userscript in Tampermonkey and paste the code
-4. Save the userscript
-5. The script is now active on GitHub and GitLab PR pages
-
-## Usage
+#### Usage
 
 1. Navigate to any GitHub or GitLab pull request
 2. Look for the 📋 button next to the PR title
 3. Click the button to copy the PR as markdown
 4. The button will show ✅ on success or ❌ on failure
+5. The toggle to include the shorthand can be found in the Tampermonkey menu.
 
-## Supported Platforms
+## Installation
 
-- **GitHub**: github.com and GitHub Enterprise
-- **GitLab**: gitlab.com and self-hosted GitLab instances
+### Userscript (Tampermonkey)
 
-## Output Format
+For e.g. the `pr2markdown` script do the following:
 
-The extension copies PRs in this markdown format:
-
-```markdown
-[PR Title](https://github.com/user/repo/pull/123)
-```
+1. Install [Tampermonkey](https://www.tampermonkey.net/) extension in your browser
+2. Import the userscript via url in Tampermonkey (`Utilities` -> `Import from URL` -> `https://github.com/primeapple/userscripts/raw/refs/heads/main/pr2markdown.user.js`)
+3. The script is now active on GitHub and GitLab PR pages
 
 ## Development
 
 No build process required - userscripts use plain JavaScript.
-
-### Files
-
-- `pr2markdown.user.js` - Tampermonkey userscript for copying PRs as markdown
+We do have a typechecking, testing and linting pipeline via Github Actions.
+Check the `scripts` section in the `package.json`.
